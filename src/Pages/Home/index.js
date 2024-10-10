@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal, Pressable, BackHandler } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal, Pressable, BackHandler, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 class Home extends Component {
@@ -8,10 +8,25 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalLogoutVisible: false
+      modalLogoutVisible: false,
+      cliente: null
     }
 
     this.logout = this.logout.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  async componentDidMount() {
+    let cliente = null;
+    await AsyncStorage.getItem('cliente')
+      .then(clienteJson => {
+        cliente = JSON.parse(clienteJson);
+      });
+    if (cliente !== null && this.state.cliente === null) {
+      this.setState({
+        cliente: cliente
+      });
+    }
   }
 
   logout() {
@@ -62,9 +77,15 @@ class Home extends Component {
             <Text style={styles.btnLogoutLabel}>Sair</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.body}>
-
-        </View>
+        <ScrollView style={styles.body}>
+          <View style={styles.content}>
+            <Text style={styles.txt}>{this.state.cliente != null && this.state.cliente.name}</Text>
+          </View>
+          <View style={styles.content}>
+            <Text style={styles.label}>Limite de Crédito</Text>
+            <Text style={styles.txt}>R$ {this.state.cliente != null && this.state.cliente.credLimite}</Text>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     )
   }
@@ -73,7 +94,23 @@ class Home extends Component {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: "#dddddd"
+    backgroundColor: "#dddddd",
+    padding: 10
+  },
+  content: {
+    flex: 1,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15
+  },
+  txt: {
+    fontSize: 20,
+    textAlign: 'center'
+  },
+  label: {
+    textAlign: 'center',
+    color: '#777777'
   },
   header: {
     height: 64,
