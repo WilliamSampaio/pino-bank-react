@@ -14,10 +14,10 @@ AsyncStorage.setItem('clientes',
   JSON.stringify([
     {
       id: 1,
-      cpf: '03374801250',
+      cpf: '00000000000',
       pin: '123456',
-      name: 'WILLIAM B M SAMPAIO',
-      dataNascimento: '1997-01-31',
+      name: 'WILLIAM SAMPAIO',
+      dataNascimento: '1997-07-31',
       sexo: 'm',
       credLimite: 9999.98,
     }
