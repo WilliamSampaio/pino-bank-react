@@ -68,7 +68,7 @@ class Login extends Component {
         <TouchableOpacity style={styles.btnLogin} onPress={() => { this.login(this.state.cpf, this.state.pin) }}>
           <Text style={styles.btnLoginLabel}>Entrar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnJoin} onPress={() => navigation.navigate('Join')}>
+        <TouchableOpacity style={styles.btnJoin} onPress={() => this.props.navigation.navigate('Join')}>
           <Text style={styles.btnJoinLabel}>Cadastre-se</Text>
         </TouchableOpacity>
       </View>
