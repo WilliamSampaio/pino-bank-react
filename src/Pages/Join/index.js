@@ -21,52 +21,59 @@ class Join extends Component {
     this.save = this.save.bind(this);
   }
 
-  async save(){
-    if(this.state.name.length < 3){
+  async componentDidMount() {
+    const cliente = await AsyncStorage.getItem('cliente');
+    if (cliente !== null) {
+      this.props.navigation.navigate('Home');
+    }
+  }
+
+  async save() {
+    if (this.state.name.length < 3) {
       alert('Informe seu nome completo!');
       return;
     }
 
-    if(this.state.cpf.length != 11){
+    if (this.state.cpf.length != 11) {
       alert('Informe seu CPF!');
       return;
     }
 
-    if(this.state.dataNascimento.length != 10){
+    if (this.state.dataNascimento.length != 10) {
       alert('Informe sua data de nascimento!');
       return;
     }
 
-    if(this.state.sexo != 'f' && this.state.sexo != 'm'){
+    if (this.state.sexo != 'f' && this.state.sexo != 'm') {
       alert('Informe seu sexo!');
       return;
     }
 
-    if(this.state.pin1 != this.state.pin2 || this.state.pin1 === ''){
+    if (this.state.pin1 != this.state.pin2 || this.state.pin1 === '') {
       alert('PIN não infornmado ou diferente!');
       return;
     }
 
     await AsyncStorage.getItem('clientes')
-    .then(json => {
-      return JSON.parse(json);
-    })
-    .then(clientes => {
-      clientes.push({
-        name: this.state.name,
-        cpf: this.state.cpf,
-        dataNascimento: this.state.dataNascimento,
-        sexo: this.state.sexo,
-        pin: this.state.pin1,
-        cpf: this.state.cpf,
-        credLimite: parseFloat(this.state.credLimite.toFixed(2)),
-        id: clientes.length + 1
+      .then(json => {
+        return JSON.parse(json);
       })
-      AsyncStorage.setItem('clientes', JSON.stringify(clientes)).then(() => {
-        alert('Cliente cadastrado com sucesso!');
-        this.props.navigation.navigate('Login');
+      .then(clientes => {
+        clientes.push({
+          name: this.state.name,
+          cpf: this.state.cpf,
+          dataNascimento: this.state.dataNascimento,
+          sexo: this.state.sexo,
+          pin: this.state.pin1,
+          cpf: this.state.cpf,
+          credLimite: parseFloat(this.state.credLimite.toFixed(2)),
+          id: clientes.length + 1
+        })
+        AsyncStorage.setItem('clientes', JSON.stringify(clientes)).then(() => {
+          alert('Cliente cadastrado com sucesso!');
+          this.props.navigation.navigate('Login');
+        })
       })
-    })
   }
 
   render() {

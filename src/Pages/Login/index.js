@@ -13,6 +13,13 @@ class Login extends Component {
     }
   }
 
+  async componentDidMount() {
+    const cliente = await AsyncStorage.getItem('cliente');
+    if (cliente !== null) {
+      this.props.navigation.navigate('Home');
+    }
+  }
+
   async login(cpf, pin) {
     Keyboard.dismiss();
     await AsyncStorage.getItem('clientes')
